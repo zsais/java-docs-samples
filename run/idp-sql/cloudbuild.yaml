@@ -14,6 +14,9 @@ steps:
 # Deploy container image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
-  args: ['run', 'deploy', '${_IMAGE}', '--image', '${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE}', '--region', '${_REGION}']
+  args: ['run', 'deploy', '${_IMAGE}', '--image', '${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE}', '--region', '${_REGION}',
+  '--service-account', 'idp-sql-identity@zanthos-22.iam.gserviceaccount.com',
+  '--add-cloudsql-instances', 'zanthos-22:us-central1:idp-sql',
+  '--update-secrets', 'CLOUD_SQL_CREDENTIALS_SECRET=idp-sql-secrets:latest']
 images:
 - ${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE}:$COMMIT_SHA
